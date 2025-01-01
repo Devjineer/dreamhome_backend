@@ -9,7 +9,11 @@ const mailRoutes = require("./routes/mailing");
 // middleware
 app.use(express.json());
 
-app.use('/', mailRoutes)
+app.get("/", (_, res) => {
+  return res.json("REDEMPTION TIME");
+});
+
+app.use("/", mailRoutes);
 
 const port = process.env.PORT || 3000;
 

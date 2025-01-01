@@ -1,40 +1,33 @@
 require("dotenv").config();
 const nodemailer = require("nodemailer");
 const mailConfig = require("../setup/mail_config");
+const craftHTMLDoc = require('../utils/craftHTMLDoc');
+const { BAD_REQUEST_ERROR } = require("../errorhandler");
 
 // transporter global
 const transporter = nodemailer.createTransport(mailConfig);
-/**
- * From: [firstname] [lastname] <[email]>
-To: <your_email@example.com>
-Subject: [subject]
-
-Dear [Your Name or Business],
-
-You have received a new message from your contact form:
-
-Name: [firstname] [lastname]
-Phone: [phone]
-Email: [email]
-Subject: [subject]
-Message: 
-[message]
-
-Best regards,
-[firstname] [lastname]
-
- */
 
 const sendContactMail = async (req, res) => {
   const { firstname, lastname, phone, email, subject, message } = req.body;
+  // will work on errors
+  if (!firstname || !lastname || !phone || !email || !subject || !message) {
+    throw new BAD_REQUEST_ERROR('Please fill all fields')
+  }
 
-  const html = craftHTMLDoc();
-  
+  const html = craftHTMLDoc({
+    firstname,
+    lastname,
+    phone,
+    email,
+    subject,
+    message,
+  });
+
   await transporter.sendMail({
     from: "Joseyjayy2@gmail.com",
     to: "joseyjayy1@gmail.com",
     subject,
-    html: "<b>Hello world?</b>",
+    html,
   });
 
   return res.json({ msg: "message sent succesfully" });

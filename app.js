@@ -3,16 +3,13 @@ const express = require("express");
 
 const app = express();
 
+// routes
+const mailRoutes = require("./routes/mailing");
+
 // middleware
-app.use(express.json())
+app.use(express.json());
 
-const sendMail = require("./controllers/mail_controller");
-
-app.get("/", (req, res) => {
-  return res.json("REDEMPTION TIME");
-});
-
-app.get("/send-mail", sendMail);
+app.use('/', mailRoutes)
 
 const port = process.env.PORT || 3000;
 

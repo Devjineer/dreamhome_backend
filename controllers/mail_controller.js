@@ -1,40 +1,38 @@
 require("dotenv").config();
 const nodemailer = require("nodemailer");
 const mailConfig = require("../setup/mail_config");
-const craftHTMLDoc = require('../utils/craftHTMLDoc');
+const craftHTMLDoc = require("../utils/craftHTMLDoc");
 const { BAD_REQUEST_ERROR } = require("../errorhandler");
+const { StatusCodes } = require("http-status-codes");
 
 // transporter global
 const transporter = nodemailer.createTransport(mailConfig);
 
-const sendContactMail = async (req, res) => {
-  const { firstname, lastname, phone, email, subject, message } = req.body;
-  // will work on errors
-  if (!firstname || !lastname || !phone || !email || !subject || !message) {
-    throw new BAD_REQUEST_ERROR('Please fill all fields')
+const sendMail = async (req, res) => {
+  const { id } = req.params;
+  const isBotMail = id === "bot" ? true : false;
+
+  const reqBodyProps = Object.keys(req.body);
+
+  const areAllInputsFilled = reqBodyProps.find((prop) => {
+    const regex = /^$/;
+    return (regex.test(req.body[prop]))
+  });
+  
+  if(areAllInputsFilled) {
+    throw new BAD_REQUEST_ERROR(`Please fill the ${areAllInputsFilled} field`)
   }
 
-  const html = craftHTMLDoc({
-    firstname,
-    lastname,
-    phone,
-    email,
-    subject,
-    message,
-  });
+  const html = craftHTMLDoc({...req.body, isBotMail})
 
   await transporter.sendMail({
     from: "Joseyjayy2@gmail.com",
-    to: "joseyjayy1@gmail.com",
-    subject,
+    to: "Josemariaofurum@gmail.com",
+    subject: isBotMail ? 'Bot Form Submission': 'Contact Form Submission',
     html,
   });
 
-  return res.json({ msg: "message sent succesfully" });
+  return res.json({ msg: "message sent succesfully" }).status(StatusCodes.OK);
 };
 
-const sendBotMail = async (req, res) => {
-  return res.json({ msg: "message sent successfully" });
-};
-
-module.exports = { sendContactMail, sendBotMail };
+module.exports = sendMail;

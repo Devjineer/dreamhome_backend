@@ -1,19 +1,21 @@
 require("dotenv").config();
 const express = require("express");
+require("express-async-errors");
 
 const app = express();
 
 // routes
 const mailRoutes = require("./routes/mailing");
+const notfoundMiddleware = require("./middlewares/not-found");
+const errorHandlerMiddleware = require("./middlewares/error-handler");
 
 // middleware
 app.use(express.json());
 
-app.get("/", (_, res) => {
-  return res.json("REDEMPTION TIME");
-});
+app.use("/api/v1/send-mail", mailRoutes);
 
-app.use("/", mailRoutes);
+app.use(notfoundMiddleware);
+app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || 3000;
 

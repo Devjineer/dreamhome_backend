@@ -1,13 +1,11 @@
 const express = require("express");
 const router = express.Router();
 
-const {
-  sendContactMail,
-  sendBotMail,
-} = require("../controllers/mail_controller");
+const sendMail = require("../controllers/mail_controller");
+const { route } = require("express/lib/router");
 
 // router.route('/').get().post()
-router.post("/", sendContactMail);
-router.post("/bot-mail", sendBotMail);
+router.post("/", sendMail);
+router.post("/:id", sendMail);
 
 module.exports = router;

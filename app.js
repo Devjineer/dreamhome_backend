@@ -1,6 +1,7 @@
 require("dotenv").config();
-const express = require("express");
 require("express-async-errors");
+const cors = require('cors')
+const express = require("express");
 
 const app = express();
 
@@ -11,6 +12,7 @@ const errorHandlerMiddleware = require("./middlewares/error-handler");
 
 // middleware
 app.use(express.json());
+app.use(cors())
 
 app.use("/api/v1/send-mail", mailRoutes);
 

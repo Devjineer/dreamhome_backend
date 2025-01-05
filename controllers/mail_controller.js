@@ -27,7 +27,7 @@ const sendMail = async (req, res) => {
 
   await transporter.sendMail({
     from: "Joseyjayy2@gmail.com",
-    to: "Josemariaofurum@gmail.com",
+    to: "Joseysafekeep@gmail.com",
     subject: isBotMail ? 'Bot Form Submission': 'Contact Form Submission',
     html,
   });

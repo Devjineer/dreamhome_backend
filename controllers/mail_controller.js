@@ -16,19 +16,19 @@ const sendMail = async (req, res) => {
 
   const areAllInputsFilled = reqBodyProps.find((prop) => {
     const regex = /^$/;
-    return (regex.test(req.body[prop]))
+    return regex.test(req.body[prop]);
   });
-  
-  if(areAllInputsFilled) {
-    throw new BAD_REQUEST_ERROR(`Please fill the ${areAllInputsFilled} field`)
+
+  if (areAllInputsFilled) {
+    throw new BAD_REQUEST_ERROR(`Please fill the ${areAllInputsFilled} field`);
   }
 
-  const html = craftHTMLDoc({...req.body, isBotMail})
+  const html = craftHTMLDoc({ ...req.body, isBotMail });
 
   await transporter.sendMail({
     from: "Joseyjayy2@gmail.com",
-    to: "Joseysafekeep@gmail.com",
-    subject: isBotMail ? 'Bot Form Submission': 'Contact Form Submission',
+    to: "chimexsky2012@gmail.com",
+    subject: `${isBotMail ? "Bot" : "Contact"} Form Submission`,
     html,
   });
 

@@ -9,7 +9,7 @@ const craftHTMLDoc = ({
   isBotMail,
 }) => {
   let html;
-  
+
   if (isBotMail) {
     html = `
     <div class="container"> 
@@ -33,13 +33,12 @@ const craftHTMLDoc = ({
       <div class="content"> 
         <p><strong>Name:</strong> ${firstname} ${lastname}</p> 
         <p><strong>Phone:</strong> ${phone}</p>
-        <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p> 
         <p><strong>Subject:</strong> ${subject}</p>
         <p><strong>Message:</strong></p> <p>${message}</p>
-      </div> 
-      <div class="footer"> 
-      <p>Best regards,<br> ${firstname} ${lastname}</p> </div> </div>
-    `;
+        </div> 
+        <div class="footer"> 
+        <p>Best regards,<br> ${firstname} ${lastname}</p> </div> </div>
+        `;
   }
 
   return html;
